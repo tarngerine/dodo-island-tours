@@ -11,6 +11,7 @@ template.innerHTML = html`
       display: grid;
       justify-items: center;
       font-size: 1em;
+      grid-row: -1/-1;
     }
     summary::marker {
       content: '';
@@ -102,7 +103,6 @@ template.innerHTML = html`
     }
 
     [name="input"]::slotted(input) {
-      /* border: none; */
       font-size: inherit;
     }
   </style>
@@ -110,9 +110,6 @@ template.innerHTML = html`
     <summary>
       <span></span>
     </summary>
-      <!-- <button class="toggle-wrapper__close">
-        ❌
-      </button> -->
     <div class="w100">
       <label>
         <slot name="input" />
@@ -120,19 +117,6 @@ template.innerHTML = html`
       <input type="checkbox">
     </div>
   </details>
-
-  <!-- <button class="toggle-wrapper__open"> -->
-  <!-- </button> -->
-  <!-- <div class="toggle-wrapper__wrapper"
-    style="display: none">
-    <button class="toggle-wrapper__close">
-      ❌
-    </button>
-    <label>
-      <slot name="input" />
-    </label>
-    <input type="checkbox">
-  </div> -->
 `;
 
 customElements.define('toggle-input', class ToggleInput extends HTMLElement {
@@ -153,8 +137,10 @@ customElements.define('toggle-input', class ToggleInput extends HTMLElement {
       mutationList.forEach(mutation => {
         if (mutation.target.open) {
           this.style.setProperty('grid-column', '1/-1');
+          this.style.setProperty('grid-row', 'auto');
         } else {
           this.style.removeProperty('grid-column');
+          this.style.setProperty('grid-row', '-1/-1');
         }
       })
     });

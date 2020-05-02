@@ -21,6 +21,12 @@ template.innerHTML = html`
       grid-gap: 8px;
       justify-items: center;
     }
+
+    .features {
+      /* hack to allow toggle-inputs to "float up" when opened */
+      grid-template-rows: auto auto auto auto auto auto;
+      grid-gap: 0;
+    }
   </style>
   <form id="${ids.dodo.form}">
     <label>
