@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Dodo Island Tours</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js" type="module" defer></script>
+  </head>  
+  <body>
+    <header>
+      <h1>
+        Dodo Island Tours
+      </h1>
+    </header>
+
+    <section>
+      <p>
+        Welcome to Dodo Island Tours! If you'd like to set up tours for folks to visit your island, please complete the form below.
+      </p>
+
+      <details>
+        <summary>
+          Click to host an Island Tour
+        </summary>
+
+        <form id="form-island">
+          <fieldset>
+            <legend>
+              Island basics
+            </legend>
+            <label>
+              Island name
+              <input type="text" name="islandName" required />
+            </label>
+            <label>
+              Avatar name
+              <input type="text" name="hostName" required />
+            </label>
+            <label>
+              Fruit
+              <select name="fruit" required>
+                <option>Apple</option>
+                <option>Cherry</option>
+                <option>Orange</option>
+                <option>Peach</option>
+                <option>Pear</option>
+              </select>
+            </label> 
+            <label>
+              Dodo code
+              <input type="text" name="dodoCode" maxlength="5" required />
+            </label>
+            <label>
+              Description
+              <textarea name="description"></textarea>
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              Tour setup
+            </legend>
+            <label>
+              If you changed your Switch time, how many hours +/- did you change it by?
+              <fieldset>
+                <input type="number" id="islandTimeOffsetLocal" value="0">
+                <input type="hidden" name="islandTimeOffsetUTC" value="0">
+                <br>
+                <span id="islandTime">Island time is...</span>
+              </fieldset>
+            </label>
+            <!--<label>
+              Current island time
+              <fieldset>
+                
+                <input type="number"
+                       name="timeIslandHour"
+                       value="12" min="1" max="12" />
+                :
+                <input type="number"
+                       name="timeIslandMinute"
+                       value="00" min="0" max="59"
+                       disabled />
+                <select name="timeIslandAMPM">
+                  <option>AM</option>
+                  <option>PM</option>
+                </select>
+              </fieldset>
+            </label>-->
+            <label>
+              How many hours will you keep your island open?
+              <input type="number"
+                     name="sessionDuration"
+                     value="1" min="0" max="24" />
+            </label>
+            <label>
+              How long should each tour be?
+              <input type="number"
+                     name="tourDuration"
+                     value="15" min="5" max="60" />
+            </label>
+            
+            <details open>
+              <summary>
+                Preview tour schedule
+              </summary>
+              Tours start at the next 5-minute increment of the hour.
+              <ol id="schedule-preview">
+              </ol>
+            </details>
+            <label>
+              Number of visitors per tour
+              <input type="number" name="maxVisitors" value="4" min="1" max="8" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              Tour fees
+            </legend>
+            <label>
+              I want to charge a fee
+              <input type="checkbox" name="hasFee" />
+            </label>
+            <fieldset>
+              <legend>
+                Type of fee
+              </legend>
+              <label>
+                Nook miles tickets
+                <input type="number" name="feeTickets" min="0" max="50" />
+              </label>
+              <label>
+                Bells
+                <select name="feeBells">
+                  <option></option>
+                  <option>10%</option>
+                  <option>99,000</option>
+                </select>
+              </label>
+              <label>
+                Other type of fee (e.g. item)
+                <textarea name="feeDetails"></textarea>
+              </label>
+            </fieldset>
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              Stores
+            </legend>
+            <label>
+              Nook Store (*required)
+              <input type="checkbox" name="storeNook" required />
+            </label>
+            <label>
+              Able Sisters
+              <input type="checkbox" name="storeAble" />
+            </label>
+            <label>
+              Nook Store Upgraded
+              <input type="checkbox" name="storeNookPlus" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              Stalk Market
+            </legend>
+            <label>
+              Turnip price
+              <input type="number" name="turnipPrice" min="0" max="800" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              VIP Guests
+            </legend>
+            <label>
+              Celeste
+              <input type="checkbox" name="vipCeleste" />
+            </label>
+            <label>
+              Flick
+              <input type="checkbox" name="vipFlick" />
+            </label>
+            <label>
+              CJ
+              <input type="checkbox" name="vipCJ" />
+            </label>
+            <label>
+              Label
+              <input type="checkbox" name="vipLabel" />
+            </label>
+            <label>
+              Kicks
+              <input type="checkbox" name="vipKicks" />
+            </label>
+            <label>
+              Leif
+              <input type="checkbox" name="vipLeif" />
+            </label>
+            <label>
+              Redd
+              <input type="checkbox" name="vipRedd" />
+            </label>
+            <label>
+              Saharah
+              <input type="checkbox" name="vipSaharah" />
+            </label>
+            <label>
+              K.K.
+              <input type="checkbox" name="vipKk" />
+            </label>
+            <label>
+              Daisy Mae
+              <input type="checkbox" name="vipDaisyMae" />
+            </label>
+            <label>
+              Gulliver
+              <input type="checkbox" name="vipGulliver" />
+            </label>
+            <label>
+              Wisp
+              <input type="checkbox" name="vipWisp" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              DIY recipes
+            </legend>
+            <label>
+              Recipe
+              <input type="text" name="villagerDIY" />
+            </label>
+            <label>
+              Villager
+              <input type="text" name="villagerDIYVillager" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>
+              Shop items
+            </legend>
+            <label>
+              Item 1
+              <input type="text" name="shopItem1" />
+            </label>
+            <label>
+              Item 2
+              <input type="text" name="shopItem2" />
+            </label>
+            <label>
+              Item 3
+              <input type="text" name="shopItem3" />
+            </label>
+          </fieldset>
+
+          <button type="submit">
+            Create Island Tour
+          </button>
+        </form>
+      </details>
+    </section>
+    
+    <main>
+      <section>
+        <h2>
+          Available tours
+        </h2>
+        <button onclick="window.location.reload()">
+          Refresh
+        </button>
+        <ol id="list-islands">
+        </ol>
+      </section>
+    </main>
+    
+    
+  </body>
+</html>
