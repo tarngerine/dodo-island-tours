@@ -15,7 +15,7 @@ const ids = {
 const template = document.createElement('template');
 template.innerHTML = html`
   <style>
-    .VIP {
+    .VIP, .features {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
       grid-gap: 8px;
@@ -88,7 +88,7 @@ template.innerHTML = html`
           </label>
         </fieldset>
       </fieldset>
-      <fieldset>
+      <fieldset class="features">
         <legend>
           On your island now
         </legend>

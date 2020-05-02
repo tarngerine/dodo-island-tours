@@ -63,7 +63,7 @@ template.innerHTML = html`
       right: 0;
       bottom: 0;
       height: var(--dim);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
+      box-shadow: var(--shadow);
       border-radius: 9999px;
       background: white;
     }
