@@ -14,6 +14,14 @@ const ids = {
 
 const template = document.createElement('template');
 template.innerHTML = html`
+  <style>
+    .VIP {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      grid-gap: 8px;
+      justify-items: center;
+    }
+  </style>
   <form id="${ids.dodo.form}">
     <label>
       Enter your Dodo Code:
@@ -122,6 +130,16 @@ template.innerHTML = html`
             type="text"
             />
         </toggle-input>
+      </fieldset>
+      <fieldset class="VIP">
+        <legend>
+          VIP guests
+        </legend>
+        <checkbox-villager name="Sahara"></checkbox-villager>
+        <checkbox-villager name="Celeste"></checkbox-villager>
+        <checkbox-villager name="Kicks"></checkbox-villager>
+        <checkbox-villager name="Leif"></checkbox-villager>
+        <checkbox-villager name="Redd"></checkbox-villager>
       </fieldset>
     </form>
   </dialog>
