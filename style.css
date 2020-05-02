@@ -1,0 +1,27 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: system-ui, helvetica, arial, sans-serif;
+  margin: 2em;
+  line-height: 1.2em;
+}
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+
+label {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+label:nth-child(even) {
+  background: rgba(0,0,0,.02);
+}
+
+table, tr, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: .5em;
+}
