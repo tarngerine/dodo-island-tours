@@ -3,18 +3,6 @@
 //
 import { html } from '../lib/toto.js';
 
-const ids = {
-  dodo: {
-    form: "form-dodo-code",
-    input: "input-dodo-code",
-    error: "error-dodo-code",
-  },
-  dialog: {
-    dialog: "dialog-island-info",
-    form: "form-island-info",
-  }
-}
-
 const template = document.createElement('template');
 template.innerHTML = html`
   <style>
