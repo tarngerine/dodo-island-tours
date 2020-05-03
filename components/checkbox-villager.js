@@ -12,21 +12,19 @@ template.innerHTML = html`
       width: var(--dim);
     }
 
-    [type="checkbox"]:not(:checked),
-    [type="checkbox"]:checked {
+    [type="checkbox"] {
       position: absolute;
       left: -9999px;
     }
 
-    [type="checkbox"]:not(:checked) + .wrap::after,
-    [type="checkbox"]:checked + .wrap::after {
+    [type="checkbox"] + .wrap::after {
       content: '';
       position: absolute;
       left: -6px;
       bottom: 4px;
       width: 20px;
       height: 20px;
-      border: 2px solid #0000ff;
+      border: 2px solid var(--blue);
       background: white;
       border-radius: 99px;
     }
@@ -37,8 +35,9 @@ template.innerHTML = html`
       display: grid;
       align-items: center;
       justify-items: center;
-      font-size: 20px;
-      line-height: 24px;
+      line-height: 1.25em;
+      font-size: 1.25em;
+      color: var(--blue);
     }
 
     [type="checkbox"]:checked + .wrap::before {

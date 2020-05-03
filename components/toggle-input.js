@@ -13,6 +13,11 @@ template.innerHTML = html`
       font-size: 1em;
       grid-row: -1/-1;
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
     summary::marker {
       content: '';
     }
@@ -33,25 +38,20 @@ template.innerHTML = html`
     }
 
     details {
-      color: blue;
+      color: var(--blue);
     }
 
     details[open] {
-      padding: 8px;
-      margin-bottom: 16px;
+      padding: 10px;
+      margin-bottom: 2em;
       box-shadow: var(--shadow);
       border-radius: 99px;
       width: 100%;
-      box-sizing: border-box;
       position: relative;
     }
 
-    details[open] * {
-      vertical-align: middle;
-    }
-
     summary {
-      color: blue;
+      color: var(--blue);
       font-weight: bold;
       width: 72px;
       display: grid;
@@ -64,13 +64,18 @@ template.innerHTML = html`
     details[open] summary {
       position: absolute;
       width: auto;
-      top: 14px;
+      top: 10px;
     }
 
     details[open] summary::before {
-      content: '╳';
-      width: 20px;
-      height: 20px;
+      content: '';
+      width: 24px;
+      height: 24px;
+      background-image: url("./img/toggle-input-plus.svg");
+      background-size: 24px;
+      background-repeat: no-repeat;
+      background-position: center;
+      transform: rotate(45deg);
     }
 
     details[open] span {
@@ -90,20 +95,24 @@ template.innerHTML = html`
       display: inline-grid;
       grid-template-columns: 1fr 2fr;
       align-items: center;
-      padding: 4px;
       color: black;
+      height: 24px;
+      margin-top: 1px;
+      margin-bottom: -1px;
     }
 
     .w100 {
       width: 100%;
-      padding-left: 20px;
+      padding-left: 32px;
       display: grid;
       grid-template-columns: 1fr 20px;
-      box-sizing: border-box;
     }
 
     [name="input"]::slotted(input) {
       font-size: inherit;
+      border: none;
+      padding: 0;
+      margin-top: -4px;
     }
   </style>
   <details>
