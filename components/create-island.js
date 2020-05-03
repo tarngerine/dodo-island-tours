@@ -33,6 +33,10 @@ template.innerHTML = html`
           display: inline-block;
         }
 
+        .details-with-dialog > summary { list-style: none; }
+        .details-with-dialog > summary::before { display: none; }
+        .details-with-dialog > summary::-webkit-details-marker { display: none; }
+
         .details-with-dialog[open] > summary:before {
           content: " ";
           background: var(--yellow);
