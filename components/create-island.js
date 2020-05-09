@@ -75,6 +75,10 @@ template.innerHTML = html`
       <summary id="${ids.dodo.submit}">Create island tour</summary>
       <details-dialog>
         <style>
+          * {
+            box-sizing: border-box;
+          }
+
           .dialog-contents {
             width: 32em;
             padding: 1.5em;
@@ -127,42 +131,47 @@ template.innerHTML = html`
             border: none;
             background: none;
             font-size: inherit;
-            align-self: stretch;
+            line-height: inherit;
+            font-family: inherit;
+            height: 100%;
+            width: 100%;
           }
 
           .dodo input {
+            border-top: 2px solid transparent;
             border-bottom: 2px solid white;
             color: white;
           }
 
           .dodo input::placeholder {
             color: rgba(255, 255, 255, .5);
+            opacity: 1;
           }
 
           .fieldset.basics {
             padding-top: 1em;
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            grid-template-rows: 2.5em;
+            grid-template-columns: 3fr 1fr 1fr;
             grid-gap: .5em;
-            align-items: center;
+            grid-template-rows: 2.5em;
+            line-height: 2.5em;
+            align-items: baseline;
+          }
+
+          .fieldset.basics label {
+            height: 100%;
+            width: 100%;
+            font-size: inherit;
+            line-height: inherit;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-gap: .5em;
           }
 
           .basics input[type="text"] {
+            border-top: 2px solid transparent;
             border-bottom: 2px solid var(--blue);
             background: none;
-          }
-
-          .island-name {
-            align-self: stretch;
-            display: grid;
-            grid-template-columns: max-content 1fr;
-            grid-gap: 1em;
-            align-items: center;
-          }
-
-          input[name="islandName"] {
-            padding-bottom: 2px; /* align w label */
           }
 
           .select-wrap {
@@ -212,8 +221,6 @@ template.innerHTML = html`
 
           [type="checkbox"] + span::before {
             content: '';
-            margin-top: -1px;
-            margin-bottom: 1px;
             align-self: stretch;
             justify-self: stretch;
             border: 2px solid var(--blue);
@@ -221,13 +228,15 @@ template.innerHTML = html`
             border-radius: 99px;
             display: grid;
             justify-items: center;
+            font-family: auto;
+            font-size: 1.5em;
+            align-items: center;
+            line-height: 0;
           }
 
           [type="checkbox"]:checked + span::before {
             background: #15F78A;
             content: '✓';
-            line-height: 1.25em;
-            font-size: 1.25em;
             color: var(--blue);
           }
 
@@ -262,11 +271,13 @@ template.innerHTML = html`
                 Island basics
               </legend>
               <div class="fieldset basics">
-                <label class="island-name">
+                <label>
                   Island name
                   <input name="islandName"
-                    type="text"
-                    placeholder="My island" />
+                  id="islandName"
+                  type="text"
+                  placeholder="My island" />
+                  
                 </label>
                 <div class="select-wrap">
                   <select name="fruit" required
@@ -351,7 +362,7 @@ template.innerHTML = html`
                 </toggle-input>
               </div>
             </fieldset>
-            <fieldset class="VIP">
+            <fieldset>
               <legend>
                 VIP guests
               </legend>

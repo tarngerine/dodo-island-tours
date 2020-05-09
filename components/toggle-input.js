@@ -13,6 +13,7 @@ template.innerHTML = html`
       justify-items: center;
       font-size: 1em;
       grid-row: -1/-1;
+      -webkit-transform: translate3d(0,0,0);
     }
 
     * {
@@ -50,7 +51,6 @@ template.innerHTML = html`
       grid-gap: 8px;
       justify-items: center;
       text-align: center;
-      height: 72px;
     }
 
     details[open] {
@@ -77,7 +77,7 @@ template.innerHTML = html`
       background-size: var(--toggle-opened-height);
       background-repeat: no-repeat;
       background-position: center;
-      /* transform: rotate(45deg); */
+      transform: rotate(45deg);
     }
     
     details > summary::-webkit-details-marker {
@@ -105,17 +105,17 @@ template.innerHTML = html`
       padding-left: 32px;
       display: grid;
       grid-template-columns: 1fr 20px;
-      align-items: center;
+      align-items: baseline;
     }
 
     [name="input"]::slotted(input) {
+      font-family: inherit;
+      box-sizing: border-box;
       font-size: inherit;
       border: none;
       padding: 0;
       height: var(--toggle-opened-height);
       line-height: var(--toggle-opened-height);
-      box-sizing: border-box;
-      padding-bottom: 1px; /* sighs */
     }
   </style>
   <details>
@@ -153,6 +153,9 @@ customElements.define('toggle-input', class ToggleInput extends HTMLElement {
         if (mutation.target.open) {
           this.style.setProperty('grid-column', '1/-1');
           this.style.setProperty('grid-row', 'auto');
+          let input = this.shadowRoot.querySelector('slot')
+            .assignedElements()[0];
+          input.focus();
         } else {
           this.style.removeProperty('grid-column');
           this.style.setProperty('grid-row', '-1/-1');
