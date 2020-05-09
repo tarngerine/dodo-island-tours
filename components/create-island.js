@@ -27,8 +27,7 @@ template.innerHTML = html`
       />
       <span id="${ids.dodo.error}"></span>
     </label>
-    <details class="details-with-dialog details-button"
-    open>
+    <details class="details-with-dialog details-button">
       <style>
         .details-with-dialog {
           display: inline-block;
