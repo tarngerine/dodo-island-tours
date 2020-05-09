@@ -450,6 +450,7 @@ customElements.define('create-island', class CreateIsland extends HTMLElement {
       }
     })
 
+    form.addEventListener('submit', handleFormHost);
   }
 })
 
@@ -460,3 +461,41 @@ function validateDodo (code) {
   return code.toLowerCase().split("")
     .every(c => valid.indexOf(c) > -1);
 };
+
+function handleFormHost(e) {
+  e.preventDefault();
+  let payload = {};
+  for (let el of e.target.elements) {
+    if (el.type == "submit") break;
+    switch (el.type) {
+      case 'submit':
+        break;
+      case 'checkbox':
+        payload[el.name] = el.checked;
+        break;
+      case 'number':
+        payload[el.name] = parseInt(el.value);
+        break;
+      default:
+        payload[el.name] = el.value;
+    }
+  }
+  payload.tours = e.target.querySelector("create-schedule").tours;
+  console.log(payload)
+  newHost(payload);
+}
+
+function newHost(payload) {
+  fetch("https://julius-dodo.builtwithdark.com/newIsland", {
+    method: 'POST',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      window.location = `/`;
+    });
+}

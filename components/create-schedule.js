@@ -194,6 +194,15 @@ customElements.define('create-schedule', class CreateSchedule extends HTMLElemen
     super();
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
+    this._tours = [];
+  }
+
+  set tours(value) {
+    this._tours = value;
+  }
+
+  get tours() {
+    return this._tours;
   }
 
   connectedCallback() {
@@ -211,6 +220,7 @@ customElements.define('create-schedule', class CreateSchedule extends HTMLElemen
     tourDuration.addEventListener("change", previewSchedule);
     tourDuration.addEventListener("keyup", previewSchedule);
     setInterval(handleIslandTime, 1000)
+    setInterval(() => this._tours = genTours(), 1000)
 
     function handleIslandTime() {
       let opts = {
