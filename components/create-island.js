@@ -303,6 +303,15 @@ template.innerHTML = html`
                 </div>
               </div>
             </fieldset>
+            <details>
+              <summary>
+                <div class="toggle">
+                  This is tabbable
+                </div>
+              </summary>
+              Hi
+            </details>
+            <test-component></test-component>
             <fieldset>
               <legend>
                 Stores
