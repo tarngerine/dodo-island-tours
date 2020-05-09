@@ -27,15 +27,16 @@ template.innerHTML = html`
       />
       <span id="${ids.dodo.error}"></span>
     </label>
-    <details class="details-with-dialog">
+    <details class="details-with-dialog details-button"
+    open>
       <style>
         .details-with-dialog {
           display: inline-block;
         }
 
-        .details-with-dialog > summary { list-style: none; }
-        .details-with-dialog > summary::before { display: none; }
-        .details-with-dialog > summary::-webkit-details-marker { display: none; }
+        .details-button > summary { list-style: none; }
+        .details-button > summary::before { display: none; }
+        .details-button > summary::-webkit-details-marker { display: none; }
 
         .details-with-dialog[open] > summary:before {
           content: " ";
@@ -63,14 +64,20 @@ template.innerHTML = html`
           grid-template-rows: min-content;
         }
 
-        #${ids.dodo.submit} {
+        .details-button summary {
+          width: 100%;
           background: var(--blue);
           color: white;
           border-radius: 99px;
           padding: 1em;
           display: inline-grid;
+          text-align: center;
           align-items: center;
           cursor: default;
+        }
+
+        .details-button[open] > summary.hide-on-open {
+          display: none;
         }
         </style>
       <summary id="${ids.dodo.submit}">Create island tour</summary>
@@ -109,6 +116,10 @@ template.innerHTML = html`
             font-weight: bold;
             padding: 0;
           }
+
+          label {
+            font-weight: 500;
+          }
           
           .fieldset.dodo {
             background: blue;
@@ -126,6 +137,7 @@ template.innerHTML = html`
             grid-template-rows: 2em;
             grid-gap: 1em;
             align-items: center;
+            font-weight: bold;
           }
 
           input[type="text"] {            
@@ -164,6 +176,7 @@ template.innerHTML = html`
             width: 100%;
             font-size: inherit;
             line-height: inherit;
+            font-weight: 500;
             display: grid;
             grid-template-columns: auto 1fr;
             grid-gap: .5em;
@@ -175,39 +188,13 @@ template.innerHTML = html`
             background: none;
           }
 
-          .select-wrap {
-            align-self: stretch;
-            display: grid;
-            align-items: center;
-            position: relative;
-            grid-template-columns: 1fr 0;
-          }
-
-          .select-wrap::after {
-            content: '▾';
-            margin-left: -1.25em;
-            color: var(--blue);
-            pointer-events: none;
-          }
-
-          select {
-            -webkit-appearance: none;
-            border: 2px solid var(--blue);
-            border-radius: 4px;
-            font-size: inherit;
-            align-self: stretch;
-            justify-self: stretch;
-            padding-right: 1em;
-            padding-left: .5em;
-          }
-
           .fieldset.stores {
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-gap: 1em;
           }
 
-          .stores span {
+          .stores .checkbox-label {
             display: grid;
             grid-template-columns: 1.5em 1fr;
             grid-template-rows: 1.5em;
@@ -217,10 +204,10 @@ template.innerHTML = html`
 
           [type="checkbox"] {
             position: absolute;
-            left: -9999px;
+            opacity: 0;
           }
 
-          [type="checkbox"] + span::before {
+          [type="checkbox"] + .checkbox-label::before {
             content: '';
             align-self: stretch;
             justify-self: stretch;
@@ -235,13 +222,13 @@ template.innerHTML = html`
             line-height: 0;
           }
 
-          [type="checkbox"]:checked + span::before {
+          [type="checkbox"]:checked + .checkbox-label::before {
             background: #15F78A;
             content: '✓';
             color: var(--blue);
           }
 
-          [type="checkbox"]:focus + span::before {
+          [type="checkbox"]:focus + .checkbox-label::before {
             background: #15F78A;
           }
 
@@ -282,25 +269,26 @@ template.innerHTML = html`
                   id="islandName"
                   type="text"
                   placeholder="My island" />
-                  
                 </label>
-                <div class="select-wrap">
+                <custom-select>
                   <select name="fruit" required
-                  aria-label="Island fruit">
+                  aria-label="Island fruit"
+                  slot="input">
                     <option>🍎</option>
                     <option>🍒</option>
                     <option>🍊</option>
                     <option>🍑</option>
                     <option>🍐</option>
                   </select>
-                </div>
-                <div class="select-wrap">
+                </custom-select>
+                <custom-select>
                   <select name="hemisphere" required
-                  aria-label="Island hemisphere">
+                  aria-label="Island hemisphere"
+                  slot="input">
                     <option>North</option>
                     <option>South</option>
                   </select>
-                </div>
+                <custom-select>
               </div>
             </fieldset>
             <fieldset>
@@ -310,15 +298,21 @@ template.innerHTML = html`
               <div class="fieldset stores">
                 <label>
                   <input type="checkbox" name="storeNook" required />
-                  <span>Nook's Cranny (*required)</span>
+                  <span class="checkbox-label">
+                    <span>
+                      Nook's Cranny
+                      <span style="font-size: .75em">(*required)</span>
+                    </span>
+                  </span>
+                      
                 </label>
                 <label>
                   <input type="checkbox" name="storeAble" />
-                  <span>Able Sisters</span>
+                  <span class="checkbox-label">Able Sisters</span>
                 </label>
                 <label>
                   <input type="checkbox" name="storeNookPlus" />
-                  <span>Nook's Cranny Upgraded</span>
+                  <span class="checkbox-label">Nook's Cranny Upgraded</span>
                 </label>
               </div>
             </fieldset>
@@ -377,7 +371,22 @@ template.innerHTML = html`
                 <checkbox-villager name="Kicks"></checkbox-villager>
                 <checkbox-villager name="Leif"></checkbox-villager>
                 <checkbox-villager name="Redd"></checkbox-villager>
-              </fieldset>
+              </div>
+            </fieldset>
+              <details class="details-button" open>
+                <summary class="hide-on-open">
+                  Next: set tour schedule
+                </summary>
+                <fieldset>
+                  <legend>
+                    Tour schedule
+                  </legend>
+                  <div class="fieldset">
+                    <create-schedule></create-schedule>
+                  </div>
+                </fieldset>
+              </details>
+
               <fieldset>
                 <style>
                   input[type="submit"] {
@@ -434,7 +443,10 @@ customElements.define('create-island', class CreateIsland extends HTMLElement {
         errorDodo.innerHTML = "Incorrect Dodo Code format. Please try again.";
       } else {
         form.elements["dodoCode"].value = inputDodo.value;
-        setTimeout(() => form.elements["islandName"].focus(), 1);
+        setTimeout(() => {
+          form.elements["islandName"].focus();
+          window.scrollTo(0, 0);
+        }, 1);
       }
     })
 

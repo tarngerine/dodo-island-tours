@@ -14,7 +14,7 @@ template.innerHTML = html`
 
     [type="checkbox"] {
       position: absolute;
-      left: -9999px;
+      opacity: 0;
     }
 
     [type="checkbox"] + .wrap::after {
@@ -22,21 +22,23 @@ template.innerHTML = html`
       position: absolute;
       left: -6px;
       bottom: 4px;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
+      font-size: 1.5em;
       border: 2px solid var(--blue);
       background: white;
       border-radius: 99px;
+      line-height: 0;
+      font-family: auto;
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      box-sizing: border-box;
     }
 
     [type="checkbox"]:checked + .wrap::after {
       background: #15F78A;
       content: '✓';
-      display: grid;
-      align-items: center;
-      justify-items: center;
-      line-height: 1.25em;
-      font-size: 1.25em;
       color: var(--blue);
     }
 
