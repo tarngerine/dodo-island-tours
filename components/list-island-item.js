@@ -35,6 +35,12 @@ template.innerHTML = html`
       justify-self: end;
     }
 
+    a.schedule-link-anchor {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
     .features {
       display: grid;
       grid-template-columns: auto 1fr;
@@ -65,8 +71,9 @@ template.innerHTML = html`
     }
 
     .star-feature span {
-      font-size: 2em;
+      font-size: 1.8em;
       line-height: 1.2em;
+      font-weight: 500;
     }
 
     .feature {
@@ -81,6 +88,11 @@ template.innerHTML = html`
       padding: .5em;
     }
 
+    .label {
+      color: var(--blue);
+      font-weight: 500;
+    }
+
     img.vip {
       max-width: 3em;
       max-height: 3em;
@@ -89,6 +101,7 @@ template.innerHTML = html`
     .footer {
       display: grid;
       grid-auto-flow: column;
+      grid-template-columns: auto 1fr auto;
       grid-gap: 1em;
       align-items: center;
       background: white;
@@ -103,6 +116,10 @@ template.innerHTML = html`
     }
 
     .fee-note {
+      font-size: .75em;
+    }
+
+    .next-tour-label {
       font-size: .75em;
     }
 
@@ -134,7 +151,10 @@ template.innerHTML = html`
         Northern Hemisphere
       </div>
       <div class="schedule-link">
-        See full schedule ->
+        <a href="#"
+          class="schedule-link-anchor">
+          See full schedule ->
+        </a>
       </div>
     </div>
     <div class="features">
@@ -178,7 +198,7 @@ template.innerHTML = html`
         Desired Donations: star fragments or anything on my wishlist https://nook.exchange/u/sabrina/wishlist
       </div>
       <div class="next-tour">
-        Next available tour:
+        <span class="next-tour-label">Next available tour:</span>
         <br>
         <strong class="next-tour-time">4:15-4:35PM</strong>
       </div>
