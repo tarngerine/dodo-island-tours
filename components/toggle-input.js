@@ -7,6 +7,7 @@ const template = document.createElement('template');
 template.innerHTML = html`
   <style>
     :host {
+      --toggle-opened-height: 24px;
       width: 100%;
       display: grid;
       justify-items: center;
@@ -22,7 +23,11 @@ template.innerHTML = html`
       content: '';
     }
 
-    details:not([open]) summary::before {
+    details {
+      color: var(--blue);
+    }
+
+    details:not([open]) .toggle::before {
       content: '';
       background-image: url("./img/toggle-input-plus.svg");
       background-size: 36px;
@@ -37,8 +42,15 @@ template.innerHTML = html`
       box-shadow: var(--shadow);
     }
 
-    details {
+    details:not([open]) .toggle {
       color: var(--blue);
+      font-weight: bold;
+      width: 72px;
+      display: grid;
+      grid-gap: 8px;
+      justify-items: center;
+      text-align: center;
+      height: 72px;
     }
 
     details[open] {
@@ -50,45 +62,30 @@ template.innerHTML = html`
       position: relative;
     }
 
-    summary {
-      color: var(--blue);
-      font-weight: bold;
-      width: 72px;
-      display: grid;
-      grid-gap: 8px;
-      justify-items: center;
-      text-align: center;
-    }
-
-
-    details[open] summary {
+    details[open] .toggle {
       position: absolute;
+      display: grid;
       width: auto;
       top: 10px;
     }
 
-    details[open] summary::before {
+    details[open] .toggle::before {
       content: '';
-      width: 24px;
-      height: 24px;
+      width: var(--toggle-opened-height);
+      height: var(--toggle-opened-height);
       background-image: url("./img/toggle-input-plus.svg");
-      background-size: 24px;
+      background-size: var(--toggle-opened-height);
       background-repeat: no-repeat;
       background-position: center;
-      transform: rotate(45deg);
+      /* transform: rotate(45deg); */
+    }
+    
+    details > summary::-webkit-details-marker {
+      display: none !important;
     }
 
-    details[open] span {
+    details[open] .toggle-label {
       display: none;
-    }
-
-    button {
-      -webkit-appearance: none;
-      appearance: none;
-      border: 0;
-      background: none;
-      font-size: inherit;
-      text-align: center;
     }
 
     label {
@@ -96,9 +93,11 @@ template.innerHTML = html`
       grid-template-columns: 1fr 2fr;
       align-items: center;
       color: black;
-      height: 24px;
-      margin-top: 1px;
-      margin-bottom: -1px;
+      height: var(--toggle-opened-height);
+    }
+
+    .input-label {
+      line-height: var(--toggle-opened-height);
     }
 
     .w100 {
@@ -106,21 +105,28 @@ template.innerHTML = html`
       padding-left: 32px;
       display: grid;
       grid-template-columns: 1fr 20px;
+      align-items: center;
     }
 
     [name="input"]::slotted(input) {
       font-size: inherit;
       border: none;
       padding: 0;
-      margin-top: -4px;
+      height: var(--toggle-opened-height);
+      line-height: var(--toggle-opened-height);
+      box-sizing: border-box;
+      padding-bottom: 1px; /* sighs */
     }
   </style>
   <details>
     <summary>
-      <span></span>
+      <div class="toggle">
+        <span class="toggle-label"></span>
+      </div>
     </summary>
     <div class="w100">
       <label>
+        <span class="input-label"></span>
         <slot name="input" />
       </label>
       <input type="checkbox">
@@ -137,10 +143,10 @@ customElements.define('toggle-input', class ToggleInput extends HTMLElement {
 
   connectedCallback() {
     let details = this.shadowRoot.querySelector("details"),
-      open = this.shadowRoot.querySelector("span"),
-      label = this.shadowRoot.querySelector("label");
-    open.innerHTML = this.getAttribute('label') || '';
-    label.prepend(this.getAttribute('label') || '');
+      toggle = this.shadowRoot.querySelector(".toggle-label"),
+      label = this.shadowRoot.querySelector(".input-label");
+    toggle.innerHTML = this.getAttribute('label') || '';
+    label.innerHTML = this.getAttribute('label') || '';
 
     let observer = new MutationObserver((mutationList) => {
       mutationList.forEach(mutation => {

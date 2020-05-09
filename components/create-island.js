@@ -71,7 +71,7 @@ template.innerHTML = html`
           align-items: center;
           cursor: default;
         }
-      </style>
+        </style>
       <summary id="${ids.dodo.submit}">Create island tour</summary>
       <details-dialog>
         <style>
@@ -84,25 +84,28 @@ template.innerHTML = html`
             box-sizing: border-box; 
             margin-top: 2em;
           }
-
+          
           .dialog-padding {
             height: 2em;
             width: 1em;
           }
-
+          
           fieldset {
             border: none;
             padding: 0;
             margin: 0;
+          }
+          
+          .fieldset {
             padding: 1.5em 0 2em;
           }
-
+          
           legend {
             font-weight: bold;
             padding: 0;
           }
-
-          fieldset.dodo {
+          
+          .fieldset.dodo {
             background: blue;
             margin: -1.5em;
             padding: 1.5em;
@@ -111,7 +114,7 @@ template.innerHTML = html`
             font-weight: bold;
             border-radius: 1em 1em 0 0 
           }
-
+          
           .dodo label {
             display: grid;
             grid-template-columns: max-content 1fr;
@@ -120,26 +123,34 @@ template.innerHTML = html`
             align-items: center;
           }
 
-          input[type="text"] {
+          input[type="text"] {            
             border: none;
-            border-bottom: 2px solid var(--blue);
             background: none;
-            align-self: stretch;
             font-size: inherit;
+            align-self: stretch;
           }
 
           .dodo input {
-            border-color: white;
+            border-bottom: 2px solid white;
             color: white;
           }
 
-          fieldset.basics {
+          .dodo input::placeholder {
+            color: rgba(255, 255, 255, .5);
+          }
+
+          .fieldset.basics {
             padding-top: 1em;
             display: grid;
-            grid-template-columns: 4fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr;
             grid-template-rows: 2.5em;
             grid-gap: .5em;
             align-items: center;
+          }
+
+          .basics input[type="text"] {
+            border-bottom: 2px solid var(--blue);
+            background: none;
           }
 
           .island-name {
@@ -151,9 +162,7 @@ template.innerHTML = html`
           }
 
           input[name="islandName"] {
-            border-color: var(--blue);
             padding-bottom: 2px; /* align w label */
-            align-self: stretch;
           }
 
           .select-wrap {
@@ -176,13 +185,13 @@ template.innerHTML = html`
             border: 2px solid var(--blue);
             border-radius: 4px;
             font-size: inherit;
-            text-align: center;
             align-self: stretch;
             justify-self: stretch;
             padding-right: 1em;
+            padding-left: .5em;
           }
 
-          fieldset.stores {
+          .fieldset.stores {
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-gap: 1em;
@@ -236,114 +245,124 @@ template.innerHTML = html`
         </style>
         <div class="dialog-contents">
           <form id="${ids.dialog.form}">
-            <fieldset class="dodo">
-              <label>
-                Dodo code
-                <input name="dodoCode"
+            <fieldset>
+              <div class="fieldset dodo">
+                <label>
+                  Dodo code
+                  <input name="dodoCode"
                   type="text"  
                   maxlength="5"
                   placeholder="AAAAA"
                   required />
-              </label>
+                </label>
+              </div>
             </fieldset>
-            <fieldset class="basics">
+            <fieldset>
               <legend>
                 Island basics
               </legend>
-              <label class="island-name">
-                Island name
-                <input name="islandName"
-                  type="text"
-                  placeholder="My island" />
-              </label>
-              <div class="select-wrap">
-                <select name="fruit" required
-                aria-label="Island fruit">
-                  <option>🍎</option>
-                  <option>🍒</option>
-                  <option>🍊</option>
-                  <option>🍑</option>
-                  <option>🍐</option>
-                </select>
+              <div class="fieldset basics">
+                <label class="island-name">
+                  Island name
+                  <input name="islandName"
+                    type="text"
+                    placeholder="My island" />
+                </label>
+                <div class="select-wrap">
+                  <select name="fruit" required
+                  aria-label="Island fruit">
+                    <option>🍎</option>
+                    <option>🍒</option>
+                    <option>🍊</option>
+                    <option>🍑</option>
+                    <option>🍐</option>
+                  </select>
+                </div>
+                <div class="select-wrap">
+                  <select name="hemisphere" required
+                  aria-label="Island hemisphere">
+                    <option>North</option>
+                    <option>South</option>
+                  </select>
+                </div>
               </div>
-              <div class="select-wrap">
-                <select name="hemisphere" required
-                aria-label="Island hemisphere">
-                  <option>North</option>
-                  <option>South</option>
-                </select>
-            </div>
             </fieldset>
-            <fieldset class="stores">
+            <fieldset>
               <legend>
                 Stores
               </legend>
-              <label>
-                <input type="checkbox" name="storeNook" required />
-                <span>Nook's Cranny (*required)</span>
-              </label>
-              <label>
-                <input type="checkbox" name="storeAble" />
-                <span>Able Sisters</span>
-              </label>
-              <label>
-                <input type="checkbox" name="storeNookPlus" />
-                <span>Nook's Cranny Upgraded</span>
-              </label>
+              <div class="fieldset stores">
+                <label>
+                  <input type="checkbox" name="storeNook" required />
+                  <span>Nook's Cranny (*required)</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="storeAble" />
+                  <span>Able Sisters</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="storeNookPlus" />
+                  <span>Nook's Cranny Upgraded</span>
+                </label>
+              </div>
             </fieldset>
-            <fieldset class="features">
+            <fieldset>
               <legend>
                 On your island now
               </legend>
-              <toggle-input
-                label="Turnip price">
-                <input name="turnipPrice"
-                  slot="input"
-                  type="number"
-                  max="999"
-                  min="40"
-                  placeholder="100"
-                />
-              </toggle-input>
-              <toggle-input
-                label="Villager DIY">
-                <input name="villagerDIY"
-                  slot="input"
-                  type="text"
-                />
-              </toggle-input>
-              <toggle-input
-                label="Rare items">
-                <input name="rareItems"
-                  slot="input"
-                  type="text"
-                />
-              </toggle-input>
-              <toggle-input
-                label="Weather">
-                <input name="weather"
-                  slot="input"
-                  type="text"
+              <div class="fieldset features">
+                <toggle-input
+                  label="Turnip price">
+                  <input name="turnipPrice"
+                    slot="input"
+                    type="number"
+                    max="999"
+                    min="40"
+                    placeholder="100"
                   />
-              </toggle-input>
-              <toggle-input
-                label="Other">
-                <input name="other"
-                  slot="input"
-                  type="text"
+                </toggle-input>
+                <toggle-input
+                  label="Villager DIY">
+                  <input name="villagerDIY"
+                    slot="input"
+                    type="text"
                   />
-              </toggle-input>
+                </toggle-input>
+                <toggle-input
+                  label="Rare items">
+                  <input name="rareItems"
+                    slot="input"
+                    type="text"
+                  />
+                </toggle-input>
+                <toggle-input
+                  label="Weather">
+                  <input name="weather"
+                    slot="input"
+                    type="text"
+                    />
+                </toggle-input>
+                <toggle-input
+                  label="Other">
+                  <input name="other"
+                    slot="input"
+                    type="text"
+                    />
+                </toggle-input>
+              </div>
             </fieldset>
             <fieldset class="VIP">
               <legend>
                 VIP guests
               </legend>
-              <checkbox-villager name="Sahara"></checkbox-villager>
-              <checkbox-villager name="Celeste"></checkbox-villager>
-              <checkbox-villager name="Kicks"></checkbox-villager>
-              <checkbox-villager name="Leif"></checkbox-villager>
-              <checkbox-villager name="Redd"></checkbox-villager>
-            </fieldset>
+              <div class="fieldset VIP">
+                <checkbox-villager name="Sahara"></checkbox-villager>
+                <checkbox-villager name="Celeste"></checkbox-villager>
+                <checkbox-villager name="Kicks"></checkbox-villager>
+                <checkbox-villager name="Leif"></checkbox-villager>
+                <checkbox-villager name="Redd"></checkbox-villager>
+              </fieldset>
+            </div>
           </form>
           <button type="button" data-close-dialog>Close</button>
         </div>
