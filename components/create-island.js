@@ -15,7 +15,7 @@ const ids = {
 
 const template = document.createElement('template');
 template.innerHTML = html`
-  <form id="${ids.dodo.form}">
+  <div id="${ids.dodo.form}">
     <label>
       Enter your Dodo Code:
       <input type="text"
@@ -60,6 +60,7 @@ template.innerHTML = html`
           overflow: auto;
           display: grid;
           justify-items: center;
+          grid-template-rows: min-content;
         }
 
         #${ids.dodo.submit} {
@@ -240,6 +241,10 @@ template.innerHTML = html`
             color: var(--blue);
           }
 
+          [type="checkbox"]:focus + span::before {
+            background: #15F78A;
+          }
+
           .VIP, .features {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -373,6 +378,21 @@ template.innerHTML = html`
                 <checkbox-villager name="Leif"></checkbox-villager>
                 <checkbox-villager name="Redd"></checkbox-villager>
               </fieldset>
+              <fieldset>
+                <style>
+                  input[type="submit"] {
+                    font-family: inherit;
+                    font-size: inherit;
+                    border: none;
+                    width: 100%;
+                    padding: 1em;
+                    background: var(--blue);
+                    color: white;
+                    border-radius: 99px;
+                  }
+                </style>
+                <input type="submit" name="nextStep" />
+              </fieldset>
             </div>
           </form>
           <button type="button" data-close-dialog>Close</button>
@@ -381,8 +401,7 @@ template.innerHTML = html`
         </div>
       </details-dialog>
     </details>
-  </form>
-  </details>
+  </div>
 `;
 
 customElements.define('create-island', class CreateIsland extends HTMLElement {
@@ -408,14 +427,17 @@ customElements.define('create-island', class CreateIsland extends HTMLElement {
       }
     });
 
+    let form = this.shadowRoot.getElementById(ids.dialog.form);
     submitDodo.addEventListener("click", e => {
       if (validateDodo(inputDodo.value) == false) {
         e.preventDefault();
         errorDodo.innerHTML = "Incorrect Dodo Code format. Please try again.";
+      } else {
+        form.elements["dodoCode"].value = inputDodo.value;
+        setTimeout(() => form.elements["islandName"].focus(), 1);
       }
     })
 
-    let formIsland = this.shadowRoot.getElementById(ids.dialog.form);
   }
 })
 
