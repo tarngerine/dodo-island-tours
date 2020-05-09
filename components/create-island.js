@@ -64,7 +64,7 @@ template.innerHTML = html`
           grid-template-rows: min-content;
         }
 
-        .details-button summary {
+        .details-button > summary {
           width: 100%;
           background: var(--blue);
           color: white;

@@ -6,7 +6,7 @@ import { html } from '../lib/toto.js';
 const template = document.createElement('template');
 template.innerHTML = html`
   <style>
-    :host {
+    toggle-input {
       --toggle-opened-height: 24px;
       width: 100%;
       display: grid;
@@ -16,19 +16,15 @@ template.innerHTML = html`
       -webkit-transform: translate3d(0,0,0);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    toggle-input summary { list-style: none; }
+    toggle-input summary::before { display: none; }
+    toggle-input summary::-webkit-details-marker { display: none; }
 
-    summary::marker {
-      content: '';
-    }
-
-    details {
+    toggle-input details {
       color: var(--blue);
     }
 
-    details:not([open]) .toggle::before {
+    toggle-input details:not([open]) .toggle::before {
       content: '';
       background-image: url("./img/toggle-input-plus.svg");
       background-size: 36px;
@@ -43,7 +39,7 @@ template.innerHTML = html`
       box-shadow: var(--shadow);
     }
 
-    details:not([open]) .toggle {
+    toggle-input details:not([open]) .toggle {
       color: var(--blue);
       font-weight: bold;
       width: 72px;
@@ -53,7 +49,7 @@ template.innerHTML = html`
       text-align: center;
     }
 
-    details[open] {
+    toggle-input details[open] {
       padding: 10px;
       margin-bottom: 2em;
       box-shadow: var(--shadow);
@@ -62,14 +58,20 @@ template.innerHTML = html`
       position: relative;
     }
 
-    details[open] .toggle {
+    toggle-input details[open] summary {
       position: absolute;
-      display: grid;
-      width: auto;
-      top: 10px;
+      top: 50%;
+      margin-top: calc(var(--toggle-opened-height)/-2);
+      overflow: hidden;
     }
 
-    details[open] .toggle::before {
+    toggle-input details[open] .toggle {
+      display: grid;
+      align-items: center;
+      height: 100%;
+    }
+
+    toggle-input details[open] .toggle::before {
       content: '';
       width: var(--toggle-opened-height);
       height: var(--toggle-opened-height);
@@ -80,15 +82,15 @@ template.innerHTML = html`
       transform: rotate(45deg);
     }
     
-    details > summary::-webkit-details-marker {
+    toggle-input details > summary::-webkit-details-marker {
       display: none !important;
     }
 
-    details[open] .toggle-label {
+    toggle-input details[open] .toggle-label {
       display: none;
     }
 
-    label {
+    toggle-input label {
       display: inline-grid;
       grid-template-columns: 1fr 2fr;
       align-items: center;
@@ -96,19 +98,21 @@ template.innerHTML = html`
       height: var(--toggle-opened-height);
     }
 
-    .input-label {
+    toggle-input .input-label {
       line-height: var(--toggle-opened-height);
     }
 
-    .w100 {
+    toggle-input .w100 {
       width: 100%;
       padding-left: 32px;
       display: grid;
-      grid-template-columns: 1fr 20px;
-      align-items: baseline;
+      grid-template-columns: 1fr 1.5em;
+      grid-gap: .5em;
+      align-items: center;
     }
 
-    [name="input"]::slotted(input) {
+    toggle-input [type="text"],
+    toggle-input [type="number"]  {
       font-family: inherit;
       box-sizing: border-box;
       font-size: inherit;
@@ -116,6 +120,27 @@ template.innerHTML = html`
       padding: 0;
       height: var(--toggle-opened-height);
       line-height: var(--toggle-opened-height);
+    }
+
+    .checkbox-star {
+      position: relative;
+      height: 100%;
+    }
+
+    .checkbox-star::before {
+      content: '';
+      background: grey;
+      mask-image: url("../img/star.svg");
+      -webkit-mask: url("../img/star.svg");
+      mask-size: cover;
+      -webkit-mask-size: cover;
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+    
+    [type="checkbox"]:checked + .checkbox-star::before {
+      background: var(--yellow);
     }
   </style>
   <details>
@@ -127,9 +152,14 @@ template.innerHTML = html`
     <div class="w100">
       <label>
         <span class="input-label"></span>
-        <slot name="input" />
+        <slot name="input">
       </label>
-      <input type="checkbox">
+      <label>
+        <input type="checkbox"
+          name="featured"
+          aria-label="Feature this">
+        <div class="checkbox-star"></div>
+      </label>
     </div>
   </details>
 `;
@@ -137,14 +167,21 @@ template.innerHTML = html`
 customElements.define('toggle-input', class ToggleInput extends HTMLElement {
   constructor() {
     super();
-    const root = this.attachShadow({mode: 'open'});
-    root.appendChild(template.content.cloneNode(true));
+    this.appendChild(template.content.cloneNode(true));
   }
 
   connectedCallback() {
-    let details = this.shadowRoot.querySelector("details"),
-      toggle = this.shadowRoot.querySelector(".toggle-label"),
-      label = this.shadowRoot.querySelector(".input-label");
+    let details = this.querySelector("details"),
+      toggle = this.querySelector(".toggle-label"),
+      label = this.querySelector(".input-label");
+
+    // No <slot> in light DOM, so manually inserting
+    let slot = this.querySelector("slot"),
+      slotContent = this.firstElementChild;
+    let slotParent = slot.parentElement;
+    slotParent.appendChild(slotContent);
+    slot.remove();
+
     toggle.innerHTML = this.getAttribute('label') || '';
     label.innerHTML = this.getAttribute('label') || '';
 
@@ -153,9 +190,7 @@ customElements.define('toggle-input', class ToggleInput extends HTMLElement {
         if (mutation.target.open) {
           this.style.setProperty('grid-column', '1/-1');
           this.style.setProperty('grid-row', 'auto');
-          let input = this.shadowRoot.querySelector('slot')
-            .assignedElements()[0];
-          input.focus();
+          slotContent.focus();
         } else {
           this.style.removeProperty('grid-column');
           this.style.setProperty('grid-row', '-1/-1');
