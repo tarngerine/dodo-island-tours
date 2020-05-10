@@ -9,10 +9,8 @@ template.innerHTML = html`
   </style>
   <div class="">
     <ol id="list-island">
-      <list-island-item>Hello</list-island-item>
     </ol>
   </div>
-</div>  
 `;
 
 customElements.define('list-island', class ListIsland extends HTMLElement {
@@ -23,6 +21,28 @@ customElements.define('list-island', class ListIsland extends HTMLElement {
   }
 
   connectedCallback() {
+    let list = this.shadowRoot.getElementById("list-island");
+    fetch("https://julius-dodo.builtwithdark.com/islands")
+      .then(response => {
+        if (response.status !== 200) throw (response);
+        return response.json();
+      })
+      .catch(e => console.error(e))
+      .then(data => {
+        let html = '';
+        if (data.length == 0) {
+          html += "No tours right now — host one of your own!"
+        }
 
+        data.forEach(island => {
+          let item = document.createElement("list-island-item");
+          item.island = island;
+          list.appendChild(item);
+        });
+
+        // document.querySelectorAll(".form-join").forEach(f => {
+        //   f.addEventListener("submit", joinIsland);
+        // })
+      })
   }
 })

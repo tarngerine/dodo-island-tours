@@ -145,10 +145,8 @@ template.innerHTML = html`
         🍊
       </div>
       <div class="name">
-        Marmalade
       </div>
       <div class="hemisphere">
-        Northern Hemisphere
       </div>
       <div class="schedule-link">
         <a href="#"
@@ -159,40 +157,10 @@ template.innerHTML = html`
     </div>
     <div class="features">
       <div class="features-wrap">
-        <div class="star-feature">
-          <strong>Rare items</strong>
-          <br>
-          <span>Royal Crown @ Able's</span>
-        </div>
-        <div class="feature">
-          <div class="label">
-            Turnips
-          </div>
-          <div class="value">
-            568 bells/turnip
-          </div>
-        </div>
-        <div class="feature">
-          <div class="label">
-            DIY
-          </div>
-          <div class="value">
-            Pitfall seed - house with pink flowers outside
-          </div>
-        </div>
-        <div class="feature">
-          <div class="label">
-            VIP
-          </div>
-          <div class="value">
-            <img src="../img/celeste.webp" class="vip"/>
-          </div>
-        </div>
       </div>
     </div>
     <div class="footer">
       <div class="fee">
-        No fee
       </div>
       <div class="fee-note">
         Desired Donations: star fragments or anything on my wishlist https://nook.exchange/u/sabrina/wishlist
@@ -200,7 +168,10 @@ template.innerHTML = html`
       <div class="next-tour">
         <span class="next-tour-label">Next available tour:</span>
         <br>
-        <strong class="next-tour-time">4:15-4:35PM</strong>
+        <strong class="next-tour-time">
+          <tour-time>
+          </tour-time>
+        </strong>
       </div>
       <div class="book">
         <button>Book now</button>
@@ -209,14 +180,88 @@ template.innerHTML = html`
   </li>
 `;
 
+let featureTemplate = document.createElement('template');
+featureTemplate.innerHTML = html`
+  <div class="feature">
+    <div class="label">
+    </div>
+    <div class="value">
+    </div>
+  </div>
+`;
+
+let featuredTemplate = document.createElement('template');
+featuredTemplate.innerHTML = html`
+  <div class="star-feature">
+    <strong>Rare items</strong>
+    <br>
+    <span>Royal Crown @ Able's</span>
+  </div>
+`;
+
 customElements.define('list-island-item', class ListIslandItem extends HTMLElement {
   constructor() {
     super();
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
+    this._island = {};
+  }
+
+  set island(value) {
+    this._island = value;
+  }
+
+  get island() {
+    return this._island;
   }
 
   connectedCallback() {
-    // this.this.getAttribute('')
+    let island = this._island;
+    console.log(island)
+    this.shadowRoot.querySelector(".name").innerHTML = island.islandName;
+    this.shadowRoot.querySelector(".fruit").innerHTML = island.fruit;
+    // this.shadowRoot.querySelector(".hemisphere").innerHTML = island.hemisphere;
+    let features = this.shadowRoot.querySelector(".features-wrap");
+    
+    let addFeature = (key, l) => {
+      if (island[key] === null || island[key] === "") return;
+      let f;
+      if (island.featured === key) {
+        f = featuredTemplate.content.cloneNode(true);
+        f.querySelector("strong").innerHTML = l;
+        f.querySelector("span").innerHTML = island[key];
+        features.prepend(f);
+      } else {
+        f = featureTemplate.content.cloneNode(true);
+        f.querySelector(".label").innerHTML = l;
+        if (key === "VIPGuests") {
+          let images = '';
+          console.log(island[key])
+          for(let v in island[key]) {
+            if (island[key][v]) {
+              images += `<img src="../img/${v}.webp" class="vip" />`
+            }
+          }
+          f.querySelector(".value").innerHTML = images;
+        } else { 
+          f.querySelector(".value").innerHTML = island[key];
+        }
+        features.appendChild(f);
+      }
+    }
+
+    addFeature("rareItems", "Rare items");
+    addFeature("turnipPrice", "Turnips");
+    addFeature("villagerDIY", "Villager DIY");
+    addFeature("weather", "Weather");
+    addFeature("other", "Other");
+    addFeature("VIPGuests", "VIP");
+    this.shadowRoot.querySelector(".fee").innerHTML = island.hasFee ? island.fee : "No fee";
+    // this.shadowRoot.querySelector(".fee-note").innerHTML = this.getAttribute("feenote");
+    let nextTour = island.tours[Object.keys(island.tours).sort()[0]];
+    let tourTime = this.shadowRoot.querySelector("tour-time");
+    tourTime.setAttribute("timeStart", nextTour.timeStart);
+    tourTime.setAttribute("timeEnd", nextTour.timeEnd);
+    tourTime.setAttribute("offset", island.islandTimeOffset);
   }
 })
