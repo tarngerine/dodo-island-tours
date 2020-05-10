@@ -270,7 +270,7 @@ template.innerHTML = html`
                   placeholder="My island" />
                 </label>
                 <custom-select>
-                  <select name="fruit" required
+                  <select name="fruit"
                   aria-label="Island fruit"
                   slot="input">
                     <option>🍎</option>
@@ -281,7 +281,7 @@ template.innerHTML = html`
                   </select>
                 </custom-select>
                 <custom-select>
-                  <select name="hemisphere" required
+                  <select name="hemisphere"
                   aria-label="Island hemisphere"
                   slot="input">
                     <option>North</option>
@@ -358,6 +358,9 @@ template.innerHTML = html`
                     type="text"
                     />
                 </toggle-input>
+                <input name="featured"
+                  type="text"
+                  hidden />
               </div>
             </fieldset>
             <fieldset>
@@ -365,7 +368,7 @@ template.innerHTML = html`
                 VIP guests
               </legend>
               <div class="fieldset VIP">
-                <checkbox-villager name="Sahara"></checkbox-villager>
+                <checkbox-villager name="Saharah"></checkbox-villager>
                 <checkbox-villager name="Celeste"></checkbox-villager>
                 <checkbox-villager name="Kicks"></checkbox-villager>
                 <checkbox-villager name="Leif"></checkbox-villager>
@@ -435,6 +438,23 @@ customElements.define('create-island', class CreateIsland extends HTMLElement {
       }
     });
 
+    let featured = this.shadowRoot.querySelector('[name="featured"]'),
+      toggleInputs = this.shadowRoot.querySelectorAll("toggle-input");
+    dialog.addEventListener('feature-checked', e => {
+      featured.value = e.detail.checked ? e.detail.feature : '';
+
+      // Ensure only one feature is checked
+      if (e.detail.checked) {
+        toggleInputs.forEach(t => {
+          // TODO: Hacky using the input slot's name to compare,
+          // inputs should prob move into toggle now with diff props, e.g. type, name
+          if (t.querySelector('[slot="input"]').getAttribute("name") !== e.detail.feature) {
+            t.querySelector('[type="checkbox"]').checked = false;
+          }
+        });
+      }
+    });
+
     let form = this.shadowRoot.getElementById(ids.dialog.form);
     submitDodo.addEventListener("click", e => {
       if (validateDodo(inputDodo.value) == false) {
@@ -479,7 +499,12 @@ function handleFormHost(e) {
         payload[el.name] = el.value;
     }
   }
-  payload.tours = e.target.querySelector("create-schedule").tours;
+  let schedule = e.target.querySelector("create-schedule");
+  payload.tours = schedule.tours;
+  payload.islandTimeOffset = +schedule.getAttribute("offset");
+  e.target.querySelectorAll("checkbox-villager").forEach(v => {
+    payload["vip" + v.getAttribute("name")] = v.checked
+  })
   console.log(payload)
   newHost(payload);
 }

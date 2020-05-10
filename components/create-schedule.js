@@ -214,6 +214,22 @@ customElements.define('create-schedule', class CreateSchedule extends HTMLElemen
       sessionDuration = this.shadowRoot.querySelector('[name="sessionDuration"]'),
       schedulePreview = this.shadowRoot.getElementById("schedule-preview");
     
+    let handleIslandTime = () => {
+      let opts = {
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      };
+      offsetUTC.value = +offsetLocal.value + localOffset();
+      this.setAttribute("offset", offsetUTC.value);
+      islandTime.innerHTML = convertToIslandTime(
+        new Date(), offsetUTC.value)
+        .toLocaleTimeString([], opts);
+      actualTime.innerHTML = new Date()
+        .toLocaleTimeString([], opts)
+      previewSchedule();
+    }
     handleIslandTime();
     offsetLocal.addEventListener("change", handleIslandTime);
     offsetLocal.addEventListener("keyup", handleIslandTime);
@@ -222,21 +238,6 @@ customElements.define('create-schedule', class CreateSchedule extends HTMLElemen
     setInterval(handleIslandTime, 1000)
     setInterval(() => this._tours = genTours(), 1000)
 
-    function handleIslandTime() {
-      let opts = {
-        month: "short",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      };
-      offsetUTC.value = +offsetLocal.value + localOffset();
-      islandTime.innerHTML = convertToIslandTime(
-        new Date(), offsetUTC.value)
-        .toLocaleTimeString([], opts);
-      actualTime.innerHTML = new Date()
-        .toLocaleTimeString([], opts)
-      previewSchedule();
-    }
 
     function genTours() {
       let startTime = new Date();

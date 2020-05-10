@@ -182,6 +182,18 @@ customElements.define('toggle-input', class ToggleInput extends HTMLElement {
     slotParent.appendChild(slotContent);
     slot.remove();
 
+    let featured = this.querySelector('[name="featured"]');
+    // featured.setAttribute("name", "featured-" + slotContent.getAttribute("name"));
+    featured.addEventListener("click", e => {
+      this.dispatchEvent(new CustomEvent('feature-checked', {
+        bubbles: true,
+        detail: {
+          feature: slotContent.getAttribute("name"),
+          checked: e.target.checked,
+        },
+      }));
+    })
+
     toggle.innerHTML = this.getAttribute('label') || '';
     label.innerHTML = this.getAttribute('label') || '';
 

@@ -98,6 +98,15 @@ customElements.define('checkbox-villager', class CheckboxVillager extends HTMLEl
     super();
     const root = this.attachShadow({ mode: 'open' });
     root.appendChild(template.content.cloneNode(true));
+    this._checked = false;
+  }
+
+  set checked(value) {
+    this._checked = value;
+  }
+
+  get checked() {
+    return this._checked;
   }
 
   connectedCallback() {
@@ -107,5 +116,8 @@ customElements.define('checkbox-villager', class CheckboxVillager extends HTMLEl
     span.textContent = this.getAttribute('name') || '';
     img.src = `../img/${this.getAttribute('name').toLowerCase()}.webp`
     
+    checkbox.addEventListener("click", e => {
+      this._checked = e.target.checked;
+    })
    }
 })
