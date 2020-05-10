@@ -500,6 +500,7 @@ function handleFormHost(e) {
     }
   }
   let schedule = e.target.querySelector("create-schedule");
+  payload.maxVisitors = +schedule.shadowRoot.querySelector('[name="maxVisitors"]').value;
   payload.tours = schedule.tours;
   payload.islandTimeOffset = +schedule.getAttribute("offset");
   e.target.querySelectorAll("checkbox-villager").forEach(v => {

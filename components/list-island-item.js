@@ -2,6 +2,7 @@
 // List item for an island
 //
 import { html } from '../lib/toto.js';
+import { joinIsland } from '../js/visitor.js';
 
 const template = document.createElement('template');
 template.innerHTML = html`
@@ -258,10 +259,16 @@ customElements.define('list-island-item', class ListIslandItem extends HTMLEleme
     addFeature("VIPGuests", "VIP");
     this.shadowRoot.querySelector(".fee").innerHTML = island.hasFee ? island.fee : "No fee";
     // this.shadowRoot.querySelector(".fee-note").innerHTML = this.getAttribute("feenote");
-    let nextTour = island.tours[Object.keys(island.tours).sort()[0]];
+    let nextTourId = Object.keys(island.tours).sort()[0];
+    let nextTour = island.tours[nextTourId];
     let tourTime = this.shadowRoot.querySelector("tour-time");
     tourTime.setAttribute("timeStart", nextTour.timeStart);
     tourTime.setAttribute("timeEnd", nextTour.timeEnd);
     tourTime.setAttribute("offset", island.islandTimeOffset);
+
+    let button = this.shadowRoot.querySelector("button");
+    button.setAttribute("data-island-id", island.islandId);
+    button.setAttribute("data-tour-id", nextTourId);
+    button.addEventListener("click", joinIsland);
   }
 })

@@ -21,7 +21,7 @@ function getTicketInfo() {
           <pre>${data.dodoCode}</pre>
         `;
       } else if (data.hasOwnProperty('pending')) {
-        html += "⏳Tour not started yet, check this page when the tour starts to get your Dodo Code";
+        html += "⏳Tour not started yet, check this page when the tour starts to get your Dodo Code. Start time may be off by ~10-20seconds depending on the difference between your local clock and our server clock";
         setTimeout((new Date(data.tour.timeStart) - new Date()), getTicketInfo);
       } else if (data.hasOwnProperty('finished')) {
         html += "✅Tour is complete! Hope you enjoyed your trip. <a href='/'>Find another tour</a>."

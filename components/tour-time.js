@@ -2,6 +2,7 @@
 // Simple span containing a tour time
 //
 import { html } from '../lib/toto.js';
+import { joinIsland } from '../js/visitor.js';
 
 const template = document.createElement('template');
 template.innerHTML = html`
