@@ -24,6 +24,7 @@ template.innerHTML = html`
         minlength="5"
         maxlength="5"
         value="AAAAA"
+        placeholder="AAAAA"
       />
       <span id="${ids.dodo.error}"></span>
     </label>

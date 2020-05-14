@@ -6,8 +6,12 @@ import { html } from '../lib/toto.js';
 const template = document.createElement('template');
 template.innerHTML = html`
   <style>
+    ol {
+      margin: 0;
+      padding: 0;
+    }
   </style>
-  <div class="">
+  <div>
     <ol id="list-island">
     </ol>
   </div>
@@ -31,7 +35,7 @@ customElements.define('list-island', class ListIsland extends HTMLElement {
       .then(data => {
         let html = '';
         if (data.length == 0) {
-          html += "No tours right now — host one of your own!"
+          list.innerHTML = "No tours right now — host one of your own!"
         }
 
         data.forEach(island => {
@@ -39,10 +43,6 @@ customElements.define('list-island', class ListIsland extends HTMLElement {
           item.island = island;
           list.appendChild(item);
         });
-
-        // document.querySelectorAll(".form-join").forEach(f => {
-        //   f.addEventListener("submit", joinIsland);
-        // })
       })
   }
 })
