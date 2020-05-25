@@ -270,7 +270,7 @@ customElements.define('list-island-item', class ListIslandItem extends HTMLEleme
     this.shadowRoot.querySelector(".fruit").innerHTML = island.fruit;
     this.shadowRoot.querySelector(".schedule-link-anchor")
       .setAttribute("href", `island.html?islandId=${island.islandId}`);
-    // this.shadowRoot.querySelector(".hemisphere").innerHTML = island.hemisphere;
+    this.shadowRoot.querySelector(".hemisphere").innerHTML = `${island.hemisphere}ern Hemisphere`;
     let features = this.shadowRoot.querySelector(".features-wrap");
     
     let addFeature = (key, l) => {
@@ -307,7 +307,10 @@ customElements.define('list-island-item', class ListIslandItem extends HTMLEleme
     addFeature("other", "Other");
     addFeature("VIPGuests", "VIP");
     this.shadowRoot.querySelector(".fee").innerHTML = island.hasFee ? island.fee : "No fee";
+    // TODO: implement fee note
     // this.shadowRoot.querySelector(".fee-note").innerHTML = this.getAttribute("feenote");
+
+    // TODO: actually show next available tour
     let nextTourId = Object.keys(island.tours).sort()[0];
     let nextTour = island.tours[nextTourId];
     let tourTime = this.shadowRoot.querySelector("tour-time");
@@ -325,6 +328,7 @@ customElements.define('list-island-item', class ListIslandItem extends HTMLEleme
       let schedule = document.createElement("list-island-item-schedule");
       schedule.island = this._island;
       scheduleContainer.appendChild(schedule);
+      this.shadowRoot.querySelector(".schedule-link-anchor").style = "display: none";
     }
   }
 });

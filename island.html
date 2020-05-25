@@ -10,6 +10,8 @@
     <script src="./components/list-island-item.js" type="module" defer></script>
     <script src="./components/list-island-item-schedule.js" type="module" defer></script>
     <script src="./components/tour-time.js" type="module" defer></script>
+    <script src="./components/join-tour.js" type="module" defer></script>
+    <script src="./components/island-dialog.js" type="module" defer></script>
     <script src="./lib/details-dialog.js" type="module" defer></script>
   </head>  
   <body>
@@ -41,6 +43,7 @@
             return;
           }
 
+          document.querySelector("h1").innerHTML = `${data.islandName} Island Tours`;
           let island = document.createElement("list-island-item");
           island.island = data;
           island.setAttribute("schedule", "");
