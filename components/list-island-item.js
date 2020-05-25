@@ -7,9 +7,15 @@ import { joinIsland } from '../js/visitor.js';
 const template = document.createElement('template');
 template.innerHTML = html`
   <style>
+    :host {
+      display: block;
+      margin: 0 auto;
+      padding-bottom: 2em;
+    }
+
     li {
       display: grid;
-      grid-template-rows: 3em 10em auto;
+      grid-template-rows: 3em auto auto;
       grid-gap: 2px;
       background: var(--blue);
       border-radius: 1em;
@@ -43,23 +49,21 @@ template.innerHTML = html`
     }
 
     .features {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      background: grey;
       background-image: url("../img/nook-bg.png");
       background-size: 25%;
       background-repeat: repeat;
+      display: block;
+      height: 100%;
     }
 
     .features-wrap {
       display: grid;
-      grid-auto-flow: column;
-      grid-template-columns: 300px;
-      grid-auto-columns: min-content;
       grid-gap: 2px;
       padding-right: 2px;
+      margin-right: -2px;
       align-items: stretch;
       background: var(--blue);
+      height: 100%;
     }
 
     .star-feature {
@@ -80,8 +84,6 @@ template.innerHTML = html`
     .feature {
       display: grid;
       grid-gap: 2px;
-      grid-template-rows: auto 1fr;
-      width: 150px;
     }
 
     .label, .value {
@@ -101,8 +103,6 @@ template.innerHTML = html`
 
     .footer {
       display: grid;
-      grid-auto-flow: column;
-      grid-template-columns: auto 1fr auto;
       grid-gap: 1em;
       align-items: center;
       background: white;
@@ -124,8 +124,15 @@ template.innerHTML = html`
       font-size: .75em;
     }
 
-    .next-tour-time {
+    .local-time {
       color: var(--blue);
+      font-weight: 600;
+      display: block;
+    }
+
+    .island-time {
+      font-size: .75em;
+      line-height: .9em;
     }
 
     button {
@@ -138,6 +145,48 @@ template.innerHTML = html`
       font-size: inherit;
       font-weight: 700;
       width: 100%;
+    }
+
+    /* Desktop only */
+    @media (min-width: 50em) {
+      :host {
+        width: 50em;
+      }
+
+      li {
+        grid-template-rows: 3em 10em auto;
+      }
+
+      .features-wrap {
+        display: inline-grid;
+        grid-auto-flow: column;
+        grid-auto-columns: auto;
+      }
+
+      .feature {
+        grid-template-rows: auto 1fr;
+        max-width: 8em;
+        min-width: 6em;
+      }
+
+      .star-feature {
+        width: 12em;
+      }
+
+      .footer {
+        grid-auto-flow: column;
+      }
+    }
+
+    /* mobile only */
+    @media (max-width: 50em) {
+      .feature {
+        grid-template-columns: 1fr 2fr;
+      }
+
+      .star-feature {
+        text-align: center;
+      }
     }
   </style>
   <li>
@@ -169,10 +218,8 @@ template.innerHTML = html`
       <div class="next-tour">
         <span class="next-tour-label">Next available tour:</span>
         <br>
-        <strong class="next-tour-time">
-          <tour-time>
-          </tour-time>
-        </strong>
+        <tour-time>
+        </tour-time>
       </div>
       <div class="book">
         <button>Book now</button>
