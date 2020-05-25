@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Dodo Island Tours</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <script src="./components/list-island-item.js" type="module" defer></script>
+    <script src="./components/list-island-item-schedule.js" type="module" defer></script>
+    <script src="./components/tour-time.js" type="module" defer></script>
+    <script src="./lib/details-dialog.js" type="module" defer></script>
+  </head>  
+  <body>
+    <header>
+      <h1>
+        Dodo Island Tours
+      </h1>
+    </header>
+
+    <main>
+      <section id="island">
+      </section>
+    </main>    
+    
+  <script>
+    let getIsland = () => {
+      let islandId = new URLSearchParams(window.location.search).get("islandId");
+      fetch("https://julius-dodo.builtwithdark.com/island/" + islandId)
+        .then(response => {
+          if (response.status !== 200) throw (response)
+          return response.json()
+        })
+        .catch(e => console.log(e))
+        .then(data => {
+          let section = document.getElementById("island");
+          console.log(data)
+          if (data === undefined) {
+            section.innerHTML = "Could not find island, the tour may be over :( <a href='/'>Check all of our tours</a>";
+            return;
+          }
+
+          let island = document.createElement("list-island-item");
+          island.island = data;
+          island.setAttribute("schedule", "");
+          section.appendChild(island);
+        })
+    }
+
+    getIsland();
+  </script>
+  </body>
+</html>

@@ -268,6 +268,8 @@ customElements.define('list-island-item', class ListIslandItem extends HTMLEleme
     console.log(island)
     this.shadowRoot.querySelector(".name").innerHTML = island.islandName;
     this.shadowRoot.querySelector(".fruit").innerHTML = island.fruit;
+    this.shadowRoot.querySelector(".schedule-link-anchor")
+      .setAttribute("href", `island.html?islandId=${island.islandId}`);
     // this.shadowRoot.querySelector(".hemisphere").innerHTML = island.hemisphere;
     let features = this.shadowRoot.querySelector(".features-wrap");
     
@@ -317,5 +319,12 @@ customElements.define('list-island-item', class ListIslandItem extends HTMLEleme
     button.setAttribute("data-island-id", island.islandId);
     button.setAttribute("data-tour-id", nextTourId);
     button.addEventListener("click", joinIsland);
+
+    if (this.getAttribute("schedule") !== null) {
+      let scheduleContainer = this.shadowRoot.querySelector("li");
+      let schedule = document.createElement("list-island-item-schedule");
+      schedule.island = this._island;
+      scheduleContainer.appendChild(schedule);
+    }
   }
-})
+});
